@@ -17,5 +17,7 @@
     Pay with c-lightning:
     <strong>lightning-cli sendpay `lightning-cli getroute <?php echo $invoice->peerid ?> <?php echo $invoice->msatoshi ?> 0 | jq -c .route` <?php echo $invoice->rhash ?></strong>
   </li>
+  <?php else: ?>
+    <li>Payment completed at: <strong><?php echo date('r', round($invoice->completed_at/1000)) ?></strong></li>
   <?php endif ?>
 </ul>

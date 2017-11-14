@@ -21,3 +21,18 @@
     <li>Payment completed at: <strong><?php echo date('r', round($invoice->completed_at/1000)) ?></strong></li>
   <?php endif ?>
 </ul>
+
+<?php if (!isset($_GET['order-received']) && !$invoice->completed): ?>
+<script>
+(function poll() {
+  jQuery.post(<?php echo json_encode(admin_url( 'admin-ajax.php' )) ?>, { action: 'ln_wait_invoice', invoice_id: <?php echo json_encode($invoice->id) ?> })
+    .success((code, state, res) => {
+      document.location = <?php echo json_encode($order->get_checkout_order_received_url()) ?>
+    })
+    .fail(res => {
+      if (res.status !== 402) throw res
+      poll()
+    })
+})()
+</script>
+<?php endif; ?>

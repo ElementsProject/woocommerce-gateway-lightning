@@ -18,14 +18,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__.'/lightning-strike-client-php/client.php';
 
 define('LIGHTNING_HOOK_KEY', hash_hmac('sha256', 'lightning-hook-token', AUTH_KEY));
+define('LIGHTNING_LONGPOLL_TIMEOUT', min(120, max(5, ini_get('max_execution_time') * 0.8)));
 
 if (!function_exists('init_wc_lightning')) {
 
   function init_wc_lightning() {
     class WC_Gateway_Lightning extends WC_Payment_Gateway {
 
-      public static function register_gateway($methods) {
-        $methods[] = 'WC_Gateway_Lightning';
+      public function register_gateway($methods) {
+        $methods[] = $this;
         return $methods;
       }
 
@@ -60,14 +61,17 @@ if (!function_exists('init_wc_lightning')) {
         $this->init_settings();
 
         // Define user set variables.
-        $this->title          = $this->get_option( 'title' );
-        $this->description    = $this->get_option( 'description' );
+        $this->title       = $this->get_option( 'title' );
+        $this->description = $this->get_option( 'description' );
 
-        $this->strike         = new LightningStrikeClient($this->get_option('server_url', 'http://localhost:8009'));
+        // Lightning Strike REST client
+        $this->strike = new LightningStrikeClient($this->get_option('server_url', 'http://localhost:8009'));
 
-        add_action('woocommerce_api_wc_gateway_lightning', array($this, 'ipn_callback') );
+        add_action('woocommerce_api_wc_gateway_lightning', array($this, 'webhook_callback') );
         add_action('woocommerce_receipt_lightning', array($this, 'show_payment_info') );
         add_action('woocommerce_thankyou_lightning', array($this, 'show_payment_info') );
+        add_action('wp_ajax_nopriv_ln_wait_invoice', array($this, 'wait_invoice'));
+        add_action('wp_ajax_ln_wait_invoice', array($this, 'wait_invoice'));
       }
 
       /**
@@ -129,7 +133,7 @@ if (!function_exists('init_wc_lightning')) {
         );
       }
 
-      public function ipn_callback() {
+      public function webhook_callback() {
         if (!self::verify_token($_GET['order'], $_GET['token'])) wp_die('invalid token');
 
         $order = wc_get_order($_GET['order']);
@@ -142,6 +146,15 @@ if (!function_exists('init_wc_lightning')) {
         $order->payment_complete();
       }
 
+      public function wait_invoice() {
+        if ($this->strike->wait($_POST['invoice_id'], LIGHTNING_LONGPOLL_TIMEOUT)) {
+          wp_send_json(true);
+        } else {
+          status_header(402);
+          wp_send_json(false);
+        }
+      }
+
       public function show_payment_info($order_id) {
         $order = wc_get_order($order_id);
         $invoice = $order->get_meta('_lightning_invoice');
@@ -150,9 +163,9 @@ if (!function_exists('init_wc_lightning')) {
       }
     }
 
-    add_action('woocommerce_payment_gateways', array('WC_Gateway_Lightning', 'register_gateway'));
+    $gateway = new WC_Gateway_Lightning();
+    add_action('woocommerce_payment_gateways', array($gateway, 'register_gateway'));
   }
 
   add_action('plugins_loaded', 'init_wc_lightning');
-
 }

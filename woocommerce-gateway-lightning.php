@@ -121,9 +121,11 @@ if (!function_exists('init_wc_lightning')) {
 
         if (!$invoice) {
           $msatoshi = self::get_msat($order);
-          $invoice = $this->strike->invoice($msatoshi, [ 'order_id' => $order_id ]);
+          $invoice = $this->strike->invoice($msatoshi, [ 'order_id' => $order->get_id() ]);
           $this->strike->registerHook($invoice->id, self::get_webhook_url($order->get_id()));
           $this->update_invoice($order, $invoice);
+
+          $order->add_order_note(sprintf(__('Lightning Strike invoice created, id=%s, rhash=%s.', 'lightning'), $invoice->id, $invoice->rhash));
         }
 
         return array(

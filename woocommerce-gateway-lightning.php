@@ -156,8 +156,15 @@ if (!function_exists('init_wc_lightning')) {
       }
 
       public function show_payment_info($order_id) {
+        global $wp;
+
         $order = wc_get_order($order_id);
         $invoice = $order->get_meta('_lightning_invoice');
+
+        if (!empty($wp->query_vars['order-received']) && $order->needs_payment()) {
+          wp_redirect($order->get_checkout_payment_url(true));
+          exit;
+        }
 
         require __DIR__.'/templates/payment-info.php';
       }

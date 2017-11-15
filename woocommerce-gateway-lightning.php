@@ -156,6 +156,7 @@ if (!function_exists('init_wc_lightning')) {
       public function wait_invoice() {
         $invoice = $this->strike->wait($_POST['invoice_id'], LIGHTNING_LONGPOLL_TIMEOUT);
         if ($invoice && $invoice->completed) {
+          $order = wc_get_order($invoice->metadata->order_id);
           $this->update_invoice($order, $invoice);
           wp_send_json(true);
         } else {
@@ -184,7 +185,10 @@ if (!function_exists('init_wc_lightning')) {
       protected function update_invoice($order, $invoice) {
         $order->update_meta_data('_lightning_invoice', $invoice);
         $order->save_meta_data();
-        if ($invoice->completed) $order->payment_complete();
+
+        if ($order->needs_payment() && $invoice->completed) {
+          $order->payment_complete();
+        }
       }
     }
 

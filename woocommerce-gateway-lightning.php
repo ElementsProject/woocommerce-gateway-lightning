@@ -123,8 +123,7 @@ if (!function_exists('init_wc_lightning')) {
           $msatoshi = self::get_msat($order);
           $invoice = $this->strike->invoice($msatoshi, [ 'order_id' => $order_id ]);
           $this->strike->registerHook($invoice->id, self::get_webhook_url($order->get_id()));
-          $order->update_meta_data('_lightning_invoice', $invoice);
-          $order->save_meta_data();
+          $this->update_invoice($order, $invoice);
         }
 
         return array(
@@ -133,21 +132,31 @@ if (!function_exists('init_wc_lightning')) {
         );
       }
 
+      /**
+       * Process webhook callbacks.
+       */
       public function webhook_callback() {
         if (!self::verify_token($_GET['order'], $_GET['token'])) wp_die('invalid token');
 
         $order = wc_get_order($_GET['order']);
-        $post = file_get_contents("php://input");
-        $invoice = json_decode($post);
+        $invoice = json_decode(file_get_contents("php://input"));
 
-        $order->add_order_note( __('Lightning payment completed', 'lightning') );
-        $order->update_meta_data('_lightning_invoice', $invoice);
-        $order->save_meta_data();
-        $order->payment_complete();
+        if (!$invoice) {
+          status_header(400);
+          wp_die('cannot decode request body invoice');
+        }
+
+        $order->add_order_note(__('Lightning webhook notification received.', 'lightning'));
+        $this->update_invoice($order, $invoice);
       }
 
+      /**
+       * JSON endpoint for long polling payment updates.
+       */
       public function wait_invoice() {
-        if ($this->strike->wait($_POST['invoice_id'], LIGHTNING_LONGPOLL_TIMEOUT)) {
+        $invoice = $this->strike->wait($_POST['invoice_id'], LIGHTNING_LONGPOLL_TIMEOUT);
+        if ($invoice && $invoice->completed) {
+          $this->update_invoice($order, $invoice);
           wp_send_json(true);
         } else {
           status_header(402);
@@ -155,6 +164,9 @@ if (!function_exists('init_wc_lightning')) {
         }
       }
 
+      /**
+       * Hooks into the checkout page to display Lightning-related payment info.
+       */
       public function show_payment_info($order_id) {
         global $wp;
 
@@ -167,6 +179,12 @@ if (!function_exists('init_wc_lightning')) {
         }
 
         require __DIR__.'/templates/payment-info.php';
+      }
+
+      protected function update_invoice($order, $invoice) {
+        $order->update_meta_data('_lightning_invoice', $invoice);
+        $order->save_meta_data();
+        if ($invoice->completed) $order->payment_complete();
       }
     }
 

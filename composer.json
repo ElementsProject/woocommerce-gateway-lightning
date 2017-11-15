@@ -10,9 +10,6 @@
     },
     "repositories": [{
         "type": "vcs",
-        "url": "/home/nadav/workspace/lightning-strike/lightning-strike-client-php"
-    }, {
-        "type": "vcs",
         "url": "https://github.com/shesek/php-restclient.git"
     }]
 }

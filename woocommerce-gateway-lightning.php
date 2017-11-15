@@ -45,7 +45,7 @@ if (!function_exists('init_wc_lightning')) {
 
       protected static function get_msat($order) {
         // @XXX temp hack with fixed exchange rate, should eventually be done on lightning-strike-rest's side
-        return round($order->get_total() / 6500 * 100000000 * 1000);
+        return number_format($order->get_total() / 6500 * 100000000 * 1000, 0, '', '');
       }
 
       public function __construct() {

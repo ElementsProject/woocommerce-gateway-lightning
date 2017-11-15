@@ -50,9 +50,9 @@ if (!function_exists('init_wc_lightning')) {
 
       public function __construct() {
         $this->id                 = 'lightning';
-        $this->order_button_text  = __( 'Proceed to Lightning Payment', 'woocommerce' );
-        $this->method_title       = __( 'Lightning', 'woocommerce' );
-        $this->method_description =  __('Lightning Network payment');
+        $this->order_button_text  = __('Proceed to Lightning Payment', 'woocommerce');
+        $this->method_title       = __('Lightning', 'woocommerce');
+        $this->method_description = __('Lightning Network Payment');
         //$this->icon               = plugin_dir_url(__FILE__).'assets/img/icon.png';
         $this->supports           = array();
 
@@ -61,17 +61,17 @@ if (!function_exists('init_wc_lightning')) {
         $this->init_settings();
 
         // Define user set variables.
-        $this->title       = $this->get_option( 'title' );
-        $this->description = $this->get_option( 'description' );
+        $this->title       = $this->get_option('title');
+        $this->description = $this->get_option('description');
 
         // Lightning Strike REST client
         $this->strike = new LightningStrikeClient($this->get_option('server_url', 'http://localhost:8009'));
 
-        add_action('woocommerce_api_wc_gateway_lightning', array($this, 'webhook_callback') );
-        add_action('woocommerce_receipt_lightning', array($this, 'show_payment_info') );
-        add_action('woocommerce_thankyou_lightning', array($this, 'show_payment_info') );
-        add_action('wp_ajax_nopriv_ln_wait_invoice', array($this, 'wait_invoice'));
+        add_action('woocommerce_api_wc_gateway_lightning', array($this, 'webhook_callback'));
+        add_action('woocommerce_receipt_lightning', array($this, 'show_payment_info'));
+        add_action('woocommerce_thankyou_lightning', array($this, 'show_payment_info'));
         add_action('wp_ajax_ln_wait_invoice', array($this, 'wait_invoice'));
+        add_action('wp_ajax_nopriv_ln_wait_invoice', array($this, 'wait_invoice'));
       }
 
       /**

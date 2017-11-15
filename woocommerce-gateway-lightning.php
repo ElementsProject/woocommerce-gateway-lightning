@@ -25,29 +25,6 @@ if (!function_exists('init_wc_lightning')) {
   function init_wc_lightning() {
     class WC_Gateway_Lightning extends WC_Payment_Gateway {
 
-      public function register_gateway($methods) {
-        $methods[] = $this;
-        return $methods;
-      }
-
-      protected static function make_token($order_id) {
-        return hash_hmac('sha256', $order_id, LIGHTNING_HOOK_KEY);
-      }
-
-      protected static function verify_token($order_id, $token) {
-        return self::make_token($order_id) === $token;
-      }
-
-      protected static function get_webhook_url($order_id) {
-        return add_query_arg(array('order' => $order_id, 'token' => self::make_token($order_id)),
-          WC()::api_request_url('WC_Gateway_Lightning'));
-      }
-
-      protected static function get_msat($order) {
-        // @XXX temp hack with fixed exchange rate, should eventually be done on lightning-strike-rest's side
-        return number_format($order->get_total() / 6500 * 100000000 * 1000, 0, '', '');
-      }
-
       public function __construct() {
         $this->id                 = 'lightning';
         $this->order_button_text  = __('Proceed to Lightning Payment', 'woocommerce');
@@ -185,6 +162,14 @@ if (!function_exists('init_wc_lightning')) {
         require __DIR__.'/templates/payment-info.php';
       }
 
+      /**
+       * Register as a WooCommerce gateway.
+       */
+      public function register_gateway($methods) {
+        $methods[] = $this;
+        return $methods;
+      }
+
       protected function update_invoice($order, $invoice) {
         $order->update_meta_data('_lightning_invoice', $invoice);
         $order->save_meta_data();
@@ -192,6 +177,24 @@ if (!function_exists('init_wc_lightning')) {
         if ($order->needs_payment() && $invoice->completed) {
           $order->payment_complete();
         }
+      }
+
+      protected static function make_token($order_id) {
+        return hash_hmac('sha256', $order_id, LIGHTNING_HOOK_KEY);
+      }
+
+      protected static function verify_token($order_id, $token) {
+        return self::make_token($order_id) === $token;
+      }
+
+      protected static function get_webhook_url($order_id) {
+        return add_query_arg(array('order' => $order_id, 'token' => self::make_token($order_id)),
+          WC()::api_request_url('WC_Gateway_Lightning'));
+      }
+
+      protected static function get_msat($order) {
+        // @XXX temp hack with fixed exchange rate, should eventually be done on lightning-strike-rest's side
+        return number_format($order->get_total() / 6500 * 100000000 * 1000, 0, '', '');
       }
     }
 

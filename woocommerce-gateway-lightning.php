@@ -98,8 +98,11 @@ if (!function_exists('init_wc_lightning')) {
         $invoice = $order->get_meta('_lightning_invoice');
 
         if (!$invoice) {
-          $msatoshi = self::get_msat($order);
-          $invoice = $this->strike->invoice($msatoshi, [ 'order_id' => $order->get_id() ]);
+          $invoice = $this->strike->invoice([
+            'currency' => $order->get_currency(),
+            'amount'   => $order->get_total(),
+            'metadata' => [ 'order_id' => $order->get_id() ]
+          ]);
           $this->strike->registerHook($invoice->id, self::get_webhook_url($order->get_id()));
           $this->update_invoice($order, $invoice);
 
@@ -190,11 +193,6 @@ if (!function_exists('init_wc_lightning')) {
       protected static function get_webhook_url($order_id) {
         return add_query_arg(array('order' => $order_id, 'token' => self::make_token($order_id)),
           WC()::api_request_url('WC_Gateway_Lightning'));
-      }
-
-      protected static function get_msat($order) {
-        // @XXX temp hack with fixed exchange rate, should eventually be done on lightning-strike-rest's side
-        return number_format($order->get_total() / 6500 * 100000000 * 1000, 0, '', '');
       }
     }
 

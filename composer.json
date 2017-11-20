@@ -7,9 +7,5 @@
     },
     "require-dev": {
         "clue/phar-composer": "^1.0"
-    },
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/shesek/php-restclient.git"
-    }]
+    }
 }

@@ -45,6 +45,7 @@ if (!function_exists('init_wc_lightning')) {
         $this->strike = new LightningStrikeClient($this->get_option('server_url', 'http://localhost:8009'));
 
         add_action('woocommerce_payment_gateways', array($this, 'register_gateway'));
+        add_action('woocommerce_update_options_payment_gateways_lightning', array($this, 'process_admin_options'));
         add_action('woocommerce_api_wc_gateway_lightning', array($this, 'webhook_callback'));
         add_action('woocommerce_receipt_lightning', array($this, 'show_payment_info'));
         add_action('woocommerce_thankyou_lightning', array($this, 'show_payment_info'));

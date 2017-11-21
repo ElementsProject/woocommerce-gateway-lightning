@@ -42,7 +42,7 @@ if (!function_exists('init_wc_lightning')) {
         $this->description = $this->get_option('description');
 
         // Lightning Strike REST client
-        $this->strike = new LightningStrikeClient($this->get_option('server_url', 'http://localhost:8009'));
+        $this->strike = new LightningStrikeClient($this->get_option('server_url', 'http://localhost:9112'));
 
         add_action('woocommerce_payment_gateways', array($this, 'register_gateway'));
         add_action('woocommerce_update_options_payment_gateways_lightning', array($this, 'process_admin_options'));
@@ -76,7 +76,7 @@ if (!function_exists('init_wc_lightning')) {
             'title'       => __('Lightning Strike server', 'lightning'),
             'type'        => 'text',
             'description' => __('URL of the Lightning Strike REST server to connect to.', 'lightning'),
-            'default'     => __('http://localhost:8009', 'lightning'),
+            'default'     => __('http://localhost:9112', 'lightning'),
             'desc_tip'    => true,
           ),
           'description' => array(

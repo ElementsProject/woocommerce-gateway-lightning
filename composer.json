@@ -5,6 +5,7 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "elementsproject/lightning-strike-client-php": "dev-master"
+        "elementsproject/lightning-strike-client-php": "dev-master",
+        "bacon/bacon-qr-code": "^1.0"
     }
 }

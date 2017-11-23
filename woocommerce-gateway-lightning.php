@@ -162,7 +162,12 @@ if (!function_exists('init_wc_lightning')) {
           exit;
         }
 
-        require __DIR__.'/templates/payment-info.php';
+        if ($order->needs_payment()) {
+          $qr_uri = self::get_qr_uri($invoice);
+          require __DIR__.'/templates/payment.php';
+        } else {
+          require __DIR__.'/templates/completed.php';
+        }
       }
 
       /**
@@ -193,6 +198,15 @@ if (!function_exists('init_wc_lightning')) {
       protected static function get_webhook_url($order_id) {
         return add_query_arg(array('order' => $order_id, 'token' => self::make_token($order_id)),
           WC()::api_request_url('WC_Gateway_Lightning'));
+      }
+      protected static function get_qr_uri($invoice) {
+        $renderer = new \BaconQrCode\Renderer\Image\Png;
+        $renderer->setWidth(200);
+        $renderer->setHeight(200);
+        $renderer->setMargin(2);
+        $writer = new \BaconQrCode\Writer($renderer);
+        $image = $writer->writeString(strtoupper('lightning:' . $invoice->payreq));
+        return 'data:image/png;base64,' . base64_encode($image);
       }
     }
 

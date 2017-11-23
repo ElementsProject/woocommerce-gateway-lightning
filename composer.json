@@ -2,8 +2,9 @@
     "name": "elementsproject/woocommerce-gateway-lightning",
     "description": "WooCommerce Gateway Plugin for Lightning Strike",
     "license": "MIT",
+    "minimum-stability": "dev",
     "require": {
-      "elementsproject/lightning-strike-client-php": "dev-master"
+        "elementsproject/lightning-strike-client-php": "dev-master"
     },
     "require-dev": {
         "clue/phar-composer": "^1.0"

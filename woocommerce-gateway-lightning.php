@@ -14,8 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
 
-//require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__.'/lightning-strike-client-php/client.php';
+require_once 'vendor/autoload.php';
 
 define('LIGHTNING_HOOK_KEY', hash_hmac('sha256', 'lightning-hook-token', AUTH_KEY));
 define('LIGHTNING_LONGPOLL_TIMEOUT', min(120, max(5, ini_get('max_execution_time') * 0.8)));

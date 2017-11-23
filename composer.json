@@ -1,7 +1,7 @@
 {
     "name": "elementsproject/woocommerce-gateway-lightning",
     "description": "WooCommerce Gateway Plugin for Lightning Strike",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {

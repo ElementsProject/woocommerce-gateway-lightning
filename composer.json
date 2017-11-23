@@ -5,8 +5,5 @@
     "minimum-stability": "dev",
     "require": {
         "elementsproject/lightning-strike-client-php": "dev-master"
-    },
-    "require-dev": {
-        "clue/phar-composer": "^1.0"
     }
 }

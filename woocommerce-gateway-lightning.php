@@ -199,11 +199,12 @@ if (!function_exists('init_wc_lightning')) {
         return add_query_arg(array('order' => $order_id, 'token' => self::make_token($order_id)),
           WC()::api_request_url('WC_Gateway_Lightning'));
       }
+
       protected static function get_qr_uri($invoice) {
         $renderer = new \BaconQrCode\Renderer\Image\Png;
-        $renderer->setWidth(200);
-        $renderer->setHeight(200);
-        $renderer->setMargin(2);
+        $renderer->setWidth(180);
+        $renderer->setHeight(180);
+        $renderer->setMargin(0);
         $writer = new \BaconQrCode\Writer($renderer);
         $image = $writer->writeString(strtoupper('lightning:' . $invoice->payreq));
         return 'data:image/png;base64,' . base64_encode($image);

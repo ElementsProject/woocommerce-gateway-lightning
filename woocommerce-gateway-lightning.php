@@ -99,10 +99,11 @@ if (!function_exists('init_wc_lightning')) {
 
         if (!$invoice) {
           $invoice = $this->strike->invoice([
-            'currency' => $order->get_currency(),
-            'amount'   => $order->get_total(),
-            'metadata' => [ 'order_id' => $order->get_id() ],
-            'webhook'  => self::get_webhook_url($order->get_id())
+            'currency'    => $order->get_currency(),
+            'amount'      => $order->get_total(),
+            'description' => self::make_desc($order),
+            'metadata'    => [ 'order_id' => $order->get_id() ],
+            'webhook'     => self::get_webhook_url($order->get_id())
           ]);
           $this->update_invoice($order, $invoice);
 
@@ -208,6 +209,19 @@ if (!function_exists('init_wc_lightning')) {
         $writer = new \BaconQrCode\Writer($renderer);
         $image = $writer->writeString(strtoupper('lightning:' . $invoice->payreq));
         return 'data:image/png;base64,' . base64_encode($image);
+      }
+
+      protected static function make_desc($order) {
+        $total = $order->get_total() . ' ' .$order->get_currency();
+        $desc = get_bloginfo('name') . ': ' . $total . ' for ';
+        $products = $order->get_items();
+        while (strlen($desc) < 100 && count($products)) {
+          $product = array_shift($products);
+          if (count($products)) $desc .= $product['name'] . ' x ' . $product['qty'] . ', ';
+          else $desc = substr($desc, 0, -2) . ' and ' . $product['name'].' x '.$product['qty'];
+        }
+        if (count($products)) $desc = substr($desc, 0, -2) . ' and ' . count($products) . ' more';
+        return $desc;
       }
     }
 

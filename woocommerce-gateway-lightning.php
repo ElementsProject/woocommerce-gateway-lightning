@@ -22,6 +22,8 @@ define('LIGHTNING_LONGPOLL_TIMEOUT', min(120, max(5, ini_get('max_execution_time
 if (!function_exists('init_wc_lightning')) {
 
   function init_wc_lightning() {
+    if (!class_exists('WC_Payment_Gateway')) return;
+
     class WC_Gateway_Lightning extends WC_Payment_Gateway {
 
       public function __construct() {

@@ -10,7 +10,7 @@
     Lightning rhash: <strong><?php echo $invoice->rhash ?></strong>
   </li>
   <li>
-    Invoice amount: <strong><?php echo number_format($invoice->msatoshi/1000, 3) ?> satoshis (<?php echo number_format($invoice->msatoshi / 100000000000, 11) ?> BTC)</strong>
+    Invoice amount: <strong><?php echo number_format($invoice->msatoshi/100000000, 8) ?> mBTC</strong>
   </li>
   <li>
     Payment request: <strong><?php echo $invoice->payreq ?></strong>

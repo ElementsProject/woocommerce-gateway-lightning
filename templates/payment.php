@@ -1,7 +1,10 @@
 <link rel="stylesheet" href="<?php echo plugins_url('css/payment.css', dirname(__FILE__))?>" type="text/css">
 
 <div class="ln-pay">
-  <h4><strong>Pay <?php echo $order->get_formatted_order_total() ?> with Lightning</strong> (<?php echo number_format($invoice->msatoshi/1000, 3) ?> satoshis)</h4>
+  <h4>
+    <strong>Pay <?php echo $order->get_formatted_order_total() ?> with Lightning</strong>
+    (<?php echo number_format($invoice->msatoshi/100000000, 8) ?> mBTC)
+  </h4>
   <img class="qr" src="<?php echo $qr_uri ?>">
   <div class="payreq">
     <code><?php echo $invoice->payreq ?></code>

@@ -222,7 +222,7 @@ if (!function_exists('init_wc_lightning')) {
           if (count($products)) $desc .= $product['name'] . ' x ' . $product['qty'] . ', ';
           else $desc = substr($desc, 0, -2) . ' and ' . $product['name'].' x '.$product['qty'];
         }
-        if (count($products)) $desc = substr($desc, 0, -2) . ' and ' . count($products) . ' more';
+        if (count($products)) $desc = substr($desc, 0, -2) . ' and ' . count($products) . ' more items';
         return $desc;
       }
     }

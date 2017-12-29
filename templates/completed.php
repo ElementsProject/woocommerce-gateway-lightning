@@ -4,9 +4,6 @@
     Payment completed at: <strong><?php echo date('r', round($invoice->completed_at/1000)) ?></strong>
   </li>
   <li>
-    Lightning peerid: <strong><?php echo $invoice->peerid ?></strong>
-  </li>
-  <li>
     Lightning rhash: <strong><?php echo $invoice->rhash ?></strong>
   </li>
   <li>

@@ -42,8 +42,8 @@ if (!function_exists('init_wc_lightning')) {
         $this->title       = $this->get_option('title');
         $this->description = $this->get_option('description');
 
-        // Lightning Strike REST client
-        $this->strike = new LightningStrikeClient($this->get_option('server_url', 'http://localhost:9112'));
+        // Lightning Charge REST client
+        $this->charge = new LightningChargeClient($this->get_option('server_url', 'http://localhost:9112'));
 
         add_action('woocommerce_payment_gateways', array($this, 'register_gateway'));
         add_action('woocommerce_update_options_payment_gateways_lightning', array($this, 'process_admin_options'));
@@ -74,9 +74,9 @@ if (!function_exists('init_wc_lightning')) {
             'desc_tip'    => true,
            ),
           'server_url' => array (
-            'title'       => __('Lightning Strike server', 'lightning'),
+            'title'       => __('Lightning Charge server', 'lightning'),
             'type'        => 'text',
-            'description' => __('URL of the Lightning Strike REST server to connect to.', 'lightning'),
+            'description' => __('URL of the Lightning Charge REST server to connect to.', 'lightning'),
             'default'     => __('http://localhost:9112', 'lightning'),
             'desc_tip'    => true,
           ),
@@ -100,7 +100,7 @@ if (!function_exists('init_wc_lightning')) {
         $invoice = $order->get_meta('_lightning_invoice');
 
         if (!$invoice) {
-          $invoice = $this->strike->invoice([
+          $invoice = $this->charge->invoice([
             'currency'    => $order->get_currency(),
             'amount'      => $order->get_total(),
             'description' => self::make_desc($order),
@@ -109,7 +109,7 @@ if (!function_exists('init_wc_lightning')) {
           ]);
           $this->update_invoice($order, $invoice);
 
-          $order->add_order_note(sprintf(__('Lightning Strike invoice created, id=%s, rhash=%s.', 'lightning'), $invoice->id, $invoice->rhash));
+          $order->add_order_note(sprintf(__('Lightning Charge invoice created, id=%s, rhash=%s.', 'lightning'), $invoice->id, $invoice->rhash));
         }
 
         return array(
@@ -140,7 +140,7 @@ if (!function_exists('init_wc_lightning')) {
        * JSON endpoint for long polling payment updates.
        */
       public function wait_invoice() {
-        $invoice = $this->strike->wait($_POST['invoice_id'], LIGHTNING_LONGPOLL_TIMEOUT);
+        $invoice = $this->charge->wait($_POST['invoice_id'], LIGHTNING_LONGPOLL_TIMEOUT);
         if ($invoice && $invoice->completed) {
           $order = wc_get_order($invoice->metadata->order_id);
           $this->update_invoice($order, $invoice);

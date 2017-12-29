@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f2c1c72eb2e17f169f965440cd62dcb0",
-    "content-hash": "fdb5128085f955d5d9ecdac510127dc7",
+    "hash": "a36a634faee78fcaa96cb26d1fb88763",
+    "content-hash": "5a13c4bdc2ec069587516186010bcb83",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -54,17 +54,17 @@
             "time": "2017-10-17 09:59:25"
         },
         {
-            "name": "elementsproject/lightning-strike-client-php",
-            "version": "dev-master",
+            "name": "elementsproject/lightning-charge-client-php",
+            "version": "0.1.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ElementsProject/lightning-strike-client-php.git",
-                "reference": "5ad6308d7e056e11532dd331d6c0cbad0d1e63fc"
+                "url": "https://github.com/ElementsProject/lightning-charge-client-php.git",
+                "reference": "1ee22161e90318296770135519cbdd624dcb796a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ElementsProject/lightning-strike-client-php/zipball/5ad6308d7e056e11532dd331d6c0cbad0d1e63fc",
-                "reference": "5ad6308d7e056e11532dd331d6c0cbad0d1e63fc",
+                "url": "https://api.github.com/repos/ElementsProject/lightning-charge-client-php/zipball/1ee22161e90318296770135519cbdd624dcb796a",
+                "reference": "1ee22161e90318296770135519cbdd624dcb796a",
                 "shasum": ""
             },
             "require": {
@@ -84,8 +84,8 @@
             "license": [
                 "MIT"
             ],
-            "description": "PHP client for the Lightning Strike REST API",
-            "time": "2017-11-23 01:45:51"
+            "description": "PHP client for the Lightning Charge REST API",
+            "time": "2017-12-29 19:18:18"
         },
         {
             "name": "tcdent/php-restclient",
@@ -143,9 +143,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "elementsproject/lightning-strike-client-php": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

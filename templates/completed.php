@@ -1,7 +1,7 @@
 <h2>Payment completed successfully</h2>
 <ul class="order_details">
   <li>
-    Payment completed at: <strong><?php echo date('r', round($invoice->completed_at/1000)) ?></strong>
+    Payment completed at: <strong><?php echo date('r', $invoice->completed_at) ?></strong>
   </li>
   <li>
     Lightning rhash: <strong><?php echo $invoice->rhash ?></strong>

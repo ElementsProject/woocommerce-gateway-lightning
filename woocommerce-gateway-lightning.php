@@ -43,7 +43,7 @@ if (!function_exists('init_wc_lightning')) {
         $this->description = $this->get_option('description');
 
         // Lightning Charge REST client
-        $this->charge = new LightningChargeClient($this->get_option('server_url', 'http://localhost:9112'));
+        $this->charge = new LightningChargeClient($this->get_option('charge_url', 'http://localhost:9112'), $this->get_option('charge_token'));
 
         add_action('woocommerce_payment_gateways', array($this, 'register_gateway'));
         add_action('woocommerce_update_options_payment_gateways_lightning', array($this, 'process_admin_options'));
@@ -73,11 +73,17 @@ if (!function_exists('init_wc_lightning')) {
             'default'     => __('Bitcoin Lightning', 'lightning'),
             'desc_tip'    => true,
            ),
-          'server_url' => array (
+          'charge_url' => array (
             'title'       => __('Lightning Charge server', 'lightning'),
             'type'        => 'text',
             'description' => __('URL of the Lightning Charge REST server to connect to.', 'lightning'),
             'default'     => __('http://localhost:9112', 'lightning'),
+            'desc_tip'    => true,
+          ),
+          'charge_token' => array (
+            'title'       => __('Lightning Charge API token', 'lightning'),
+            'type'        => 'text',
+            'description' => __('API access token configured in the Lightning Charge server.', 'lightning'),
             'desc_tip'    => true,
           ),
           'description' => array(

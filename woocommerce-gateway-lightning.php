@@ -244,7 +244,7 @@ if (!function_exists('init_wc_lightning')) {
           else $desc = substr($desc, 0, -2) . ' and ' . $product['name'].' x '.$product['qty'];
         }
         if (count($products)) $desc = substr($desc, 0, -2) . ' and ' . count($products) . ' more items';
-        return $desc;
+        return str_replace('"', '', $desc); // c-lightning's json parser doesn't like these, should eventually be fixed
       }
     }
 

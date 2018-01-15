@@ -146,13 +146,14 @@ if (!function_exists('init_wc_lightning')) {
        * JSON endpoint for long polling payment updates.
        */
       public function wait_invoice() {
-        $invoice = $this->charge->wait($_POST['invoice_id'], LIGHTNING_LONGPOLL_TIMEOUT);
-        if ($invoice && $invoice->completed) {
-          $order = wc_get_order($invoice->metadata->order_id);
-          $this->update_invoice($order, $invoice);
+        $paid_inv = $this->charge->wait($_POST['invoice_id'], LIGHTNING_LONGPOLL_TIMEOUT);
+
+        if ($paid_inv) {
+          $order = wc_get_order($paid_inv->metadata->order_id);
+          $this->update_invoice($order, $paid_inv);
           wp_send_json(true);
         } else {
-          status_header(402);
+          status_header($paid_inv === false ? 410 : 402);
           wp_send_json(false);
         }
       }
@@ -164,9 +165,21 @@ if (!function_exists('init_wc_lightning')) {
         global $wp;
 
         $order = wc_get_order($order_id);
-        $invoice = $order->get_meta('_lightning_invoice');
 
         if (!empty($wp->query_vars['order-received']) && $order->needs_payment()) {
+          // thankyou page requested, but order is still unpaid
+          wp_redirect($order->get_checkout_payment_url(true));
+          exit;
+        }
+
+        $invoice = $order->get_meta('_lightning_invoice');
+        if ($invoice->status == 'unpaid') {
+          $invoice = $this->charge->fetch($invoice->id);
+          $this->update_invoice($order, $invoice);
+        }
+
+        if ($order->has_status('cancelled')) {
+          // invoice expired, reload page to display expiry message
           wp_redirect($order->get_checkout_payment_url(true));
           exit;
         }
@@ -174,7 +187,7 @@ if (!function_exists('init_wc_lightning')) {
         if ($order->needs_payment()) {
           $qr_uri = self::get_qr_uri($invoice);
           require __DIR__.'/templates/payment.php';
-        } else {
+        } elseif ($order->has_status(array('processing', 'completed'))) {
           require __DIR__.'/templates/completed.php';
         }
       }
@@ -191,8 +204,10 @@ if (!function_exists('init_wc_lightning')) {
         $order->update_meta_data('_lightning_invoice', $invoice);
         $order->save_meta_data();
 
-        if ($order->needs_payment() && $invoice->completed) {
-          $order->payment_complete();
+        if ($invoice->status == 'paid' && $order->needs_payment()) {
+          $order->payment_complete($invoice->id);
+        } else if ($invoice->status == 'expired' && $order->has_status(array('pending', 'on-hold'))) {
+          $order->update_status('cancelled', 'Lightning invoice expired');
         }
       }
 

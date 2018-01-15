@@ -1,5 +1,10 @@
-.order_details {
-  display: none; /* Hide WooCommerce default payment details */
+/* Hide WooCommerce default title payment details */
+header.entry-header, .order_details {
+  display: none;
+}
+
+.woocommerce-breadcrumb {
+  margin-bottom: 0;
 }
 
 .ln-pay { margin-bottom: 2em; }
@@ -26,6 +31,14 @@
   display: block;
   margin: 1em 0;
   padding: 0.75em;
+}
+
+.ln-pay p {
+  margin: 1em 0;
+}
+
+.ln-pay .loader {
+  display: inline;
 }
 
 @media (max-width: 550px) {

@@ -19,7 +19,7 @@ That's it! The "Bitcoin Lightning" payment option should now be available in you
 
 <img src="https://i.imgur.com/Q67y5l2.png" width="45%"></img>
 <img src="https://i.imgur.com/958Bm64.png" width="45%"></img>
-<img src="https://i.imgur.com/I6zP72M.png" width="45%"></img>
+<img src="https://i.imgur.com/QbWiks1.png" width="45%"></img>
 <a href="https://i.imgur.com/UBCdmLR.png"><img src="https://i.imgur.com/JgwuFSl.png" width="45%"></img></a>
 
 ## License

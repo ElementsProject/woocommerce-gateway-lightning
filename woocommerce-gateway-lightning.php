@@ -221,7 +221,7 @@ if (!function_exists('init_wc_lightning')) {
 
       protected static function get_webhook_url($order_id) {
         return add_query_arg(array('order' => $order_id, 'token' => self::make_token($order_id)),
-          WC()::api_request_url('WC_Gateway_Lightning'));
+          WC()->api_request_url('WC_Gateway_Lightning'));
       }
 
       protected static function get_qr_uri($invoice) {

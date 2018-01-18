@@ -5,6 +5,8 @@ based on [Lightning Charge](https://github.com/ElementsProject/lightning-charge)
 
 ## Installation
 
+Requires PHP >= 5.6 and the `php-curl` and `php-gd` extensions.
+
 1. Setup [Lightning Charge](https://github.com/ElementsProject/lightning-charge).
 
 2. [Download woocommerce-gateway-lightning.zip](https://github.com/ElementsProject/woocommerce-gateway-lightning/releases)

@@ -6,7 +6,7 @@
     Author:      Blockstream
     Author URI:  https://blockstream.com
 
-    Version:           0.1.3
+    Version:           0.1.4
     GitHub Plugin URI: https://github.com/ElementsProject/woocommerce-gateway-lightning
 */
 

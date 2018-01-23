@@ -7,7 +7,7 @@
     Lightning rhash: <strong><?php echo $invoice->rhash ?></strong>
   </li>
   <li>
-    Invoice amount: <strong><?php echo rtrim(number_format($invoice->msatoshi/100000000, 8), "0.") ?> mBTC</strong>
+    Invoice amount: <strong><?php echo self::format_msat($invoice->msatoshi) ?></strong>
   </li>
   <li>
     Payment request: <strong><?php echo $invoice->payreq ?></strong>

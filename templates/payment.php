@@ -7,7 +7,7 @@
   <h1>Pay with Lightning</h1>
   <h3>
     <?php if ($order->get_currency() !== 'BTC'): ?> <?php echo $order->get_total() ?> <?php echo $order->get_currency() ?> = <?php endif ?>
-    <?php echo rtrim(number_format($invoice->msatoshi/100000000, 8), "0.") ?> mBTC
+    <?php echo self::format_msat($invoice->msatoshi) ?>
   </h3>
   <img class="qr" src="<?php echo $qr_uri ?>">
   <code class="payreq"><?php echo $invoice->payreq ?></code>

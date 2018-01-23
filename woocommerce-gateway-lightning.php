@@ -246,6 +246,10 @@ if (!function_exists('init_wc_lightning')) {
         if (count($products)) $desc = substr($desc, 0, -2) . ' and ' . count($products) . ' more items';
         return str_replace('"', '', $desc); // c-lightning's json parser doesn't like these, should eventually be fixed
       }
+
+      protected static function format_msat($msat) {
+        return rtrim(rtrim(number_format($msat/100000000, 8), '0'), '.') . ' mBTC';
+      }
     }
 
     new WC_Gateway_Lightning();

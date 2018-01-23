@@ -9,7 +9,7 @@ Requires PHP >= 5.6 and the `php-curl` and `php-gd` extensions.
 
 1. Setup [Lightning Charge](https://github.com/ElementsProject/lightning-charge).
 
-2. [Download woocommerce-gateway-lightning.zip](https://github.com/ElementsProject/woocommerce-gateway-lightning/releases/download/v0.1.5/woocommerce-gateway-lightning.zip)
+2. [Download woocommerce-gateway-lightning.zip](https://github.com/ElementsProject/woocommerce-gateway-lightning/releases/download/v0.2.0/woocommerce-gateway-lightning.zip)
 
 3. Install and enable the plugin on your WordPress installation.
 

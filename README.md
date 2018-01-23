@@ -5,15 +5,24 @@ based on [Lightning Charge](https://github.com/ElementsProject/lightning-charge)
 
 ## Installation
 
-Requires PHP >= 5.6 and the `php-curl` and `php-gd` extensions.
+Requires PHP >= 5.6 and the `php-curl` and `php-gd` extensions, and [composer](https://getcomposer.org/doc/00-intro.md)
 
 1. Setup [Lightning Charge](https://github.com/ElementsProject/lightning-charge).
 
 2. [Download woocommerce-gateway-lightning.zip](https://github.com/ElementsProject/woocommerce-gateway-lightning/releases/download/v0.2.1/woocommerce-gateway-lightning.zip)
 
-3. Install and enable the plugin on your WordPress installation.
+3. Install the plugin on your WordPress installation.
 
-4. Under the WordPress administration panel, go to `WooCommerce -> Settings -> Checkout -> Lightning` to configure your Lightning Charge server URL and API token.
+4. Install Composer dependencies:
+
+```sh
+cd wp-content/plugins/woocommerce-gateway-lightning
+composer install
+```
+
+5. Enable the plugin
+
+6. Under the WordPress administration panel, go to `WooCommerce -> Settings -> Checkout -> Lightning` to configure your Lightning Charge server URL and API token.
 
 That's it! The "Bitcoin Lightning" payment option should now be available in your checkout page.
 

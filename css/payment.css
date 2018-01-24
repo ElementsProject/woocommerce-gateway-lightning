@@ -24,6 +24,7 @@ header.entry-header, .order_details {
 }
 
 .ln-pay .payreq {
+  word-wrap: break-word;
   margin-right: 220px;
 }
 

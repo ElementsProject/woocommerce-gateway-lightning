@@ -14,6 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
 
+register_activation_hook( __FILE__, function(){
+  if (!extension_loaded('gd') || !extension_loaded('curl')) {
+    die('The php-curl and php-gd extensions are required.');
+  }
+});
+
 require_once 'vendor/autoload.php';
 
 define('LIGHTNING_HOOK_KEY', hash_hmac('sha256', 'lightning-hook-token', AUTH_KEY));

@@ -15,8 +15,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 register_activation_hook( __FILE__, function(){
-  if (!extension_loaded('gd') || !extension_loaded('curl')) {
-    die('The php-curl and php-gd extensions are required.');
+  if (!extension_loaded('gd') && !extension_loaded('curl')) {
+    die('The php-curl and php-gd extensions of your apache web server are required. If you are running this wordpress on a managed hosting service you might have to switch to virtual machine or a dedicated server.');
+  }
+  else if (!extension_loaded('gd')) {
+    die('The php-gd extensions of your apache web server are required. If you are running this wordpress on a managed hosting service you might have to switch to virtual machine or a dedicated server.');
+  }
+  else if (!extension_loaded('curl')) {
+    die('The php-curl extensions of your apache web server are required. If you are running this wordpress on a managed hosting service you might have to switch to virtual machine or a dedicated server.');
   }
 });
 

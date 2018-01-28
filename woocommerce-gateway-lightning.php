@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 register_activation_hook( __FILE__, function(){
   if (!extension_loaded('gd') || !extension_loaded('curl')) {
-    die('The php-curl and php-gd extensions are required.');
+    die('The php-curl and php-gd extensions are required. Please contact your hosting provider for additional help.');
   }
 });
 

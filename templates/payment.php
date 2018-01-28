@@ -16,7 +16,7 @@
     <span class="yesscript"><img src="<?php echo plugins_url( '../img/loader.gif', __FILE__ ) ?>" class="loader" alt="loading"> Awaiting payment.</span>
     The invoice expires <span id="expiry-timer" title="<?php echo $expiry_datestr ?>"><?php echo $expiry_datestr ?></span>.
   </p>
-  <a class="checkout-button button alt" href="lightning:<?php echo $invoice->payreq ?>">Pay with Lightning</a>
+  <a class="checkout-button button alt btn btn-default" href="lightning:<?php echo $invoice->payreq ?>">Pay with Lightning</a>
 </div>
 
 <script>

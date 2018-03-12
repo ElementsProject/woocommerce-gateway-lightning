@@ -116,7 +116,7 @@ if (!function_exists('init_wc_lightning')) {
             'currency'    => $order->get_currency(),
             'amount'      => $order->get_total(),
             'description' => self::make_desc($order),
-            'metadata'    => [ 'order_id' => $order->get_id() ],
+            'metadata'    => [ 'source' => 'woocommerce-gateway', 'order_id' => $order->get_id(), 'url' => get_home_url() ],
             'webhook'     => self::get_webhook_url($order->get_id())
           ]);
           $this->update_invoice($order, $invoice);

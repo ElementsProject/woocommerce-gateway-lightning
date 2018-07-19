@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="<?php echo plugins_url('css/completed.css', dirname(__FILE__))?>" type="text/css">
+
 <h2>Payment completed successfully</h2>
 <ul class="order_details">
   <li>
@@ -10,6 +12,6 @@
     Invoice amount: <strong><?php echo self::format_msat($invoice->msatoshi) ?></strong>
   </li>
   <li>
-    Payment request: <strong><?php echo $invoice->payreq ?></strong>
+    Payment request: <strong class="payreq"><?php echo $invoice->payreq ?></strong>
   </li>
 </ul>

@@ -211,7 +211,7 @@ if (!function_exists('init_wc_lightning')) {
         $order->update_meta_data('lightning_id', $invoice->id);
         $order->update_meta_data('lightning_rhash', $invoice->rhash);
         $order->update_meta_data('lightning_msatoshi', $invoice->msatoshi);
-        $order->update_meta_data('lightning_msatoshi_received', $invoice->msatoshi_received);
+        if ($invoice->status === 'paid') $order->update_meta_data('lightning_msatoshi_received', $invoice->msatoshi_received);
         $order->save_meta_data();
 
         if ($invoice->status == 'paid' && $order->needs_payment()) {

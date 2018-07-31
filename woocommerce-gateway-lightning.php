@@ -248,13 +248,13 @@ if (!function_exists('init_wc_lightning')) {
         $total = $order->get_total() . ' ' .$order->get_currency();
         $desc = get_bloginfo('name') . ': ' . $total . ' for ';
         $products = $order->get_items();
-        while (strlen($desc) < 100 && count($products)) {
+        for ($n=0; strlen($desc) < 100 && count($products); $n++) {
           $product = array_shift($products);
           if (count($products)) $desc .= $product['name'] . ' x ' . $product['qty'] . ', ';
-          else $desc = substr($desc, 0, -2) . ' and ' . $product['name'].' x '.$product['qty'];
+          else $desc = ($n ? substr($desc, 0, -2) . ' and ' : $desc) . $product['name'].' x '.$product['qty'];
         }
         if (count($products)) $desc = substr($desc, 0, -2) . ' and ' . count($products) . ' more items';
-        return str_replace('"', '', $desc); // c-lightning's json parser doesn't like these, should eventually be fixed
+        return $desc;
       }
 
       protected static function format_msat($msat) {

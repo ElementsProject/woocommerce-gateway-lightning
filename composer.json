@@ -1,7 +1,7 @@
 {
     "name": "elementsproject/woocommerce-gateway-lightning",
     "description": "WooCommerce Gateway Plugin for Lightning Charge",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {

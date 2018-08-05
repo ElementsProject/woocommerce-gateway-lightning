@@ -9,11 +9,13 @@ sed -i 's!"version": ".*"!"version": "'"$1"'"!' composer.json
 sed -ri "s!Version:( *).*!Version:\\1$1!" woocommerce-gateway-lightning.php
 sed -ri s!download/v[^/]+/woocommerce-gateway-lightning.zip!download/v$1/woocommerce-gateway-lightning.zip! README.md
 
+composer update
+
 ./build.sh
 
 read -p "Release v$1 ready, press Enter to publish"
 
-git add README.md composer.json woocommerce-gateway-lightning.php
+git add README.md composer.json composer.lock woocommerce-gateway-lightning.php
 git commit -m v$1 && git tag v$1
 git push && git push --tags
 

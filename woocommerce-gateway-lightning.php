@@ -99,6 +99,13 @@ if (!function_exists('init_wc_lightning')) {
             'default'     => 'You will pay using the Lightning Network.',
             'desc_tip'    => true,
           ),
+          'invoice_expiry' => array(
+            'title'       => __('Invoice Expiry', 'lightning'),
+            'type'        => 'text',
+            'description' => __('Time til an invoice expires. Examples: 2w (2 weeks), 1m (1 month), 3h (3 hours), 3600s (3600 seconds). Defaults to 2h.', 'lightning'),
+            'default'     => '2h',
+            'desc_tip'    => true,
+          ),
         );
       }
 
@@ -116,6 +123,7 @@ if (!function_exists('init_wc_lightning')) {
             'currency'    => $order->get_currency(),
             'amount'      => $order->get_total(),
             'description' => self::make_desc($order),
+            'expiry'      => $this->get_option('invoice_expiry', '2h'),
             'metadata'    => [ 'source' => 'woocommerce-gateway', 'order_id' => $order->get_id(), 'url' => get_home_url() ],
             'webhook'     => self::get_webhook_url($order->get_id())
           ]);
